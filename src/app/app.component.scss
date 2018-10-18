@@ -1,0 +1,7 @@
+@import 'variables';
+.cities-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    color: $font-color;
+}

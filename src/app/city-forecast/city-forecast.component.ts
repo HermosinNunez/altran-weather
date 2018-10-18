@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { Forecast } from '../../models/forecast.model';
+import { Component, OnInit, Input } from '@angular/core';
+import { Forecast } from '../models/forecast.model';
 
 @Component({
   selector: 'city-forecast',
   templateUrl: './city-forecast.component.html',
-  styleUrls: ['./city-forecast.component.css']
+  styleUrls: ['./city-forecast.component.scss']
 })
 export class CityForecastComponent implements OnInit {
 
-  forecast: Forecast;
+  @Input() forecast: Object;
+  constructor() {
 
-  constructor() { }
+  }
 
   ngOnInit() {
   }

@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { SearchService } from './services/SearchService';
-import { Forecast } from '../models/forecast.model';
-import { promise } from 'protractor';
+import { Forecast } from './models/forecast.model';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'altran-weather';
@@ -17,9 +16,9 @@ export class AppComponent {
     let initialForecast = searchService.updateWeather();
     initialForecast.forEach(promise => {
       promise.then(success => {
-        this.forecasts.push(new Forecast(success.cityName, success.timeOfUpdate, success.status, success.temperature, success.weatherDescription));
+        this.forecasts.push(success);
       }, rejected => {
-        this.forecasts.push(new Forecast(rejected.cityName, rejected.timeOfUpdate, rejected.status));
+        this.forecasts.push(rejected);
       });
     });
   }

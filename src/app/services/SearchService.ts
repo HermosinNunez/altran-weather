@@ -1,15 +1,18 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Forecast } from '../models/forecast.model';
 
 @Injectable()
 export class SearchService {
-    readonly apiUrl: string = "https://api.openweathermap.org/data/2.5/weather";
-    readonly apiKey: string = "f91a52daf8a75a6fba9ab2c446e297a1";
+    readonly apiUrl: string = 'https://api.openweathermap.org/data/2.5/weather';
+    readonly apiKey: string = 'f91a52daf8a75a6fba9ab2c446e297a1';
+    readonly STATUS_SUCCESS = 'success';
+    readonly STATUS_REJECTED = 'rejected';
     readonly CITIES_IDS = {
-        santiago: 3871336,
-        buenosAires: 3435910,
-        lima: 3936456,
-        saoPaulo: 3448439
+        "Santiago": 3871336,
+        "Buenos Aires": 3435910,
+        "Lima": 3936456,
+        "Sao Paulo": 3448439
     }
     promises: Array<Promise<any>>;
     loading: boolean;
@@ -26,28 +29,23 @@ export class SearchService {
             let promise = this.http.get(fullUrl).toPromise()
                 .then(
                     success => {
-                        let successObject = {
-                            cityName: city,
-                            status: 'success',
-                            timeOfUpdate: timeOfUpdate,
-                            temperature: success.main.temp,
-                            weatherDescription: success.weather[0].description
-                        };
-
-                        return successObject;
+                        return this.parseToForecast(timeOfUpdate, city, success);
                     },
                     error => {
-                        let errorObject = {
-                            city: city,
-                            status: 'error'
-                        }
-
-                        return errorObject;
+                        return this.parseToForecast(timeOfUpdate, city);
                     }
                 );
             this.promises.push(promise);
         });
 
         return this.promises;
+    }
+
+    parseToForecast(timeOfUpdate: Date, cityName: string, result?: any) {
+        let parsedResult = result ?
+            new Forecast(cityName, timeOfUpdate, this.STATUS_SUCCESS, result.main.temp, result.weather[0].description, result.weather[0].icon) :
+            new Forecast(cityName, timeOfUpdate, this.STATUS_REJECTED);
+        
+        return parsedResult;
     }
 }

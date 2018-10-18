@@ -1,3 +1,8 @@
 <div class="forecast-container">
-  <span class="city-title"></span>
+  <span class="city-title">{{forecast.cityName}}</span>
+  <div class="temperature-container">{{forecast.temperature | number:'1.0-2'}} ºC</div>
+  <div class="description-container">{{forecast.weatherDescription}} 
+    <img src="{{forecast.icon}}">
+  </div>
+  <div class="last-updated-container">Last updated: {{forecast.timeOfUpdate | date:'medium'}}</div>
 </div>
