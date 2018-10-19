@@ -9,11 +9,11 @@ export class SearchService {
     readonly STATUS_SUCCESS = 'success';
     readonly STATUS_REJECTED = 'rejected';
     readonly CITIES_IDS = {
-        "Santiago": 3871336,
-        "Buenos Aires": 3435910,
-        "Lima": 3936456,
-        "Sao Paulo": 3448439
-    }
+        'Santiago': 3871336,
+        'Buenos Aires': 3435910,
+        'Lima': 3936456,
+        'Sao Paulo': 3448439
+    };
     promises: Array<Promise<any>>;
     loading: boolean;
 
@@ -24,14 +24,13 @@ export class SearchService {
 
     updateWeather() {
         Object.keys(this.CITIES_IDS).forEach(city => {
-            let timeOfUpdate: Date = new Date();
-            let fullUrl = `${this.apiUrl}?id=${this.CITIES_IDS[city]}&appid=${this.apiKey}`;
-            let promise = this.http.get(fullUrl).toPromise()
+            const timeOfUpdate: Date = new Date();
+            const fullUrl = `${this.apiUrl}?id=${this.CITIES_IDS[city]}&appid=${this.apiKey}`;
+            const promise = this.http.get(fullUrl).toPromise()
                 .then(
                     success => {
                         return this.parseToForecast(timeOfUpdate, city, success);
-                    },
-                    error => {
+                    }, () => {
                         return this.parseToForecast(timeOfUpdate, city);
                     }
                 );
@@ -42,10 +41,10 @@ export class SearchService {
     }
 
     parseToForecast(timeOfUpdate: Date, cityName: string, result?: any) {
-        let parsedResult = result ?
+        const parsedResult = result ?
             new Forecast(cityName, timeOfUpdate, this.STATUS_SUCCESS, result.main.temp, result.weather[0].description, result.weather[0].icon) :
             new Forecast(cityName, timeOfUpdate, this.STATUS_REJECTED);
-        
+
         return parsedResult;
     }
 }

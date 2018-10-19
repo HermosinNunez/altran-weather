@@ -1,5 +1,5 @@
 export class Forecast {
-    readonly iconURL = 'http://openweathermap.org/img/w/'
+    readonly iconURL = 'http://openweathermap.org/img/w/';
     cityName: string;
     temperature?: number;
     timeOfUpdate: Date;
@@ -11,6 +11,7 @@ export class Forecast {
         this.cityName = cityName;
         // Convert Kelvin into Celsius degrees
         this.temperature = temperature - 273.15;
+        this.status = status;
         this.timeOfUpdate = timeOfUpdate;
         this.weatherDescription = weatherDescription;
         this.icon = this.iconURL + icon + '.png';
